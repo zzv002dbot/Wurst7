@@ -1,4 +1,4 @@
-name: Publish Release
+name: Pubsh Release
 run-name: "Publish release from ${{ github.ref_name }} branch"
 
 on:
