@@ -18,6 +18,7 @@ import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.CommonColors;
+import net.wurstclient.WurstClient;
 
 public class PressAKeyScreen extends Screen
 {
@@ -62,7 +63,8 @@ public class PressAKeyScreen extends Screen
 	public void render(GuiGraphics context, int mouseX, int mouseY,
 		float partialTicks)
 	{
-		context.drawCenteredString(font, "Press a key or mouse button",
+		context.drawCenteredString(font,
+			WurstClient.INSTANCE.translate("gui.wurst.press_a_key.prompt"),
 			width / 2, height / 4 + 48, CommonColors.WHITE);
 		
 		for(Renderable drawable : renderables)

@@ -62,7 +62,7 @@ public final class RepairCmd extends Command
 	@Override
 	public String getPrimaryAction()
 	{
-		return "Repair Current Item";
+		return trRaw("Repair Current Item");
 	}
 	
 	@Override

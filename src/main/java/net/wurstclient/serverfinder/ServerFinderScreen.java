@@ -27,6 +27,7 @@ import net.minecraft.client.multiplayer.ServerList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.CommonColors;
 import net.minecraft.util.Util;
+import net.wurstclient.util.ChatUtils;
 import net.wurstclient.util.MathUtils;
 
 public class ServerFinderScreen extends Screen
@@ -44,7 +45,7 @@ public class ServerFinderScreen extends Screen
 	
 	public ServerFinderScreen(JoinMultiplayerScreen prevScreen)
 	{
-		super(Component.literal("Server Finder"));
+		super(Component.literal(ChatUtils.tr("Server Finder")));
 		this.prevScreen = prevScreen;
 	}
 	
@@ -52,18 +53,19 @@ public class ServerFinderScreen extends Screen
 	public void init()
 	{
 		addRenderableWidget(searchButton = Button
-			.builder(Component.literal("Search"), b -> searchOrCancel())
+			.builder(Component.literal(ChatUtils.tr("Search")),
+				b -> searchOrCancel())
 			.bounds(width / 2 - 100, height / 4 + 96 + 12, 200, 20).build());
 		searchButton.active = false;
 		
 		addRenderableWidget(Button
-			.builder(Component.literal("Tutorial"),
+			.builder(Component.literal(ChatUtils.tr("Tutorial")),
 				b -> Util.getPlatform().openUri(
 					"https://www.wurstclient.net/serverfinder-tutorial/"))
 			.bounds(width / 2 - 100, height / 4 + 120 + 12, 200, 20).build());
 		
 		addRenderableWidget(Button
-			.builder(Component.literal("Back"), b -> onClose())
+			.builder(Component.literal(ChatUtils.tr("Back")), b -> onClose())
 			.bounds(width / 2 - 100, height / 4 + 144 + 12, 200, 20).build());
 		
 		ipBox = new EditBox(font, width / 2 - 100, height / 4 + 34, 200, 20,
@@ -88,7 +90,7 @@ public class ServerFinderScreen extends Screen
 			state = ServerFinderState.CANCELLED;
 			ipBox.active = true;
 			maxThreadsBox.active = true;
-			searchButton.setMessage(Component.literal("Search"));
+			searchButton.setMessage(Component.literal(ChatUtils.tr("Search")));
 			return;
 		}
 		
@@ -96,7 +98,7 @@ public class ServerFinderScreen extends Screen
 		maxThreads = Integer.parseInt(maxThreadsBox.getValue());
 		ipBox.active = false;
 		maxThreadsBox.active = false;
-		searchButton.setMessage(Component.literal("Cancel"));
+		searchButton.setMessage(Component.literal(ChatUtils.tr("Cancel")));
 		checked = 0;
 		working = 0;
 		
@@ -172,7 +174,7 @@ public class ServerFinderScreen extends Screen
 			if(pinger.isWorking())
 			{
 				working++;
-				String name = "Grief me #" + working;
+				String name = ChatUtils.tr("Grief me #%s", working);
 				String ip = pinger.getServerIP();
 				addServerToList(name, ip);
 			}
@@ -221,32 +223,36 @@ public class ServerFinderScreen extends Screen
 	public void render(GuiGraphics context, int mouseX, int mouseY,
 		float partialTicks)
 	{
-		context.drawCenteredString(font, "Server Finder", width / 2, 20,
+		context.drawCenteredString(font, ChatUtils.tr("Server Finder"),
+			width / 2, 20,
 			CommonColors.WHITE);
 		context.drawCenteredString(font,
-			"This will search for servers with similar IPs", width / 2, 40,
+			ChatUtils.tr("This will search for servers with similar IPs"),
+			width / 2, 40,
 			CommonColors.LIGHT_GRAY);
 		context.drawCenteredString(font,
-			"to the IP you type into the field below.", width / 2, 50,
+			ChatUtils.tr("to the IP you type into the field below."), width / 2,
+			50,
 			CommonColors.LIGHT_GRAY);
 		context.drawCenteredString(font,
-			"The servers it finds will be added to your server list.",
+			ChatUtils.tr("The servers it finds will be added to your server list."),
 			width / 2, 60, CommonColors.LIGHT_GRAY);
 		
-		context.drawString(font, "Server address:", width / 2 - 100,
+		context.drawString(font, ChatUtils.tr("Server address:"), width / 2 - 100,
 			height / 4 + 24, CommonColors.LIGHT_GRAY);
 		ipBox.render(context, mouseX, mouseY, partialTicks);
 		
-		context.drawString(font, "Max. threads:", width / 2 - 100,
+		context.drawString(font, ChatUtils.tr("Max. threads:"), width / 2 - 100,
 			height / 4 + 60, CommonColors.LIGHT_GRAY);
 		maxThreadsBox.render(context, mouseX, mouseY, partialTicks);
 		
 		context.drawCenteredString(font, state.toString(), width / 2,
 			height / 4 + 73, CommonColors.LIGHT_GRAY);
 		
-		context.drawString(font, "Checked: " + checked + " / 1792",
+		context.drawString(font, ChatUtils.tr("Checked: %s / 1792", checked),
 			width / 2 - 100, height / 4 + 84, CommonColors.LIGHT_GRAY);
-		context.drawString(font, "Working: " + working, width / 2 - 100,
+		context.drawString(font, ChatUtils.tr("Working: %s", working),
+			width / 2 - 100,
 			height / 4 + 94, CommonColors.LIGHT_GRAY);
 		
 		for(Renderable drawable : renderables)
@@ -285,7 +291,7 @@ public class ServerFinderScreen extends Screen
 		@Override
 		public String toString()
 		{
-			return name;
+			return ChatUtils.tr(name);
 		}
 	}
 }

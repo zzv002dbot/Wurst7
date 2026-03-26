@@ -98,10 +98,12 @@ public final class NoChatReportsOtf extends OtherFeature
 		ClickEvent clickEvent = new ClickEvent.OpenUrl(
 			URI.create("https://www.wurstclient.net/chat-disabled-mpk/"));
 		HoverEvent hoverEvent = new HoverEvent.ShowText(
-			Component.literal("Original message: ").append(originalText));
+			Component.literal(ChatUtils.tr("Original message: "))
+				.append(originalText));
 		
 		ChatUtils.component(Component.literal(
-			"The server is refusing to let you chat without enabling chat reports. Click \u00a7nhere\u00a7r to learn more.")
+			ChatUtils.tr(
+				"The server is refusing to let you chat without enabling chat reports. Click \u00a7nhere\u00a7r to learn more."))
 			.withStyle(
 				s -> s.withClickEvent(clickEvent).withHoverEvent(hoverEvent)));
 	}
@@ -123,10 +125,10 @@ public final class NoChatReportsOtf extends OtherFeature
 		
 		return new GuiMessageTag(0xE84F58, Icon.CHAT_MODIFIED,
 			Component.literal(ChatUtils.WURST_PREFIX
-				+ "\u00a7cReportable\u00a7r - "
+				+ "\u00a7c" + ChatUtils.tr("Reportable") + "\u00a7r - "
 				+ WURST.translate(
 					"description.wurst.nochatreports.message_is_reportable")),
-			"Reportable");
+			ChatUtils.tr("Reportable"));
 	}
 	
 	@Override

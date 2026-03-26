@@ -11,6 +11,7 @@ import net.wurstclient.DontBlock;
 import net.wurstclient.SearchTags;
 import net.wurstclient.other_feature.OtherFeature;
 import net.wurstclient.settings.EnumSetting;
+import net.wurstclient.util.ChatUtils;
 
 @SearchTags({"tab gui", "HackMenu", "hack menu", "SideBar", "side bar",
 	"blocks movement combat render chat fun items other"})
@@ -49,7 +50,7 @@ public final class TabGuiOtf extends OtherFeature
 		@Override
 		public String toString()
 		{
-			return name;
+			return ChatUtils.tr(name);
 		}
 	}
 }

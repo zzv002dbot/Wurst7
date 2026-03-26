@@ -84,7 +84,7 @@ public final class CheckboxComponent extends Component
 				setting.isLocked());
 		
 		// text
-		String name = setting.getName();
+		String name = setting.getDisplayName();
 		context.drawString(TR, name, x3 + 2, y1 + 2, GUI.getTxtColor(), false);
 	}
 	
@@ -98,10 +98,8 @@ public final class CheckboxComponent extends Component
 	{
 		String tooltip = setting.getWrappedDescription(200);
 		if(setting.isLocked())
-		{
-			tooltip += "\n\nThis checkbox is locked to ";
-			tooltip += setting.isChecked() + ".";
-		}
+			tooltip += "\n\n" + WURST.translate(
+				"gui.wurst.clickgui.checkbox_locked_to", setting.isChecked());
 		
 		return tooltip;
 	}
@@ -109,7 +107,7 @@ public final class CheckboxComponent extends Component
 	@Override
 	public int getDefaultWidth()
 	{
-		return BOX_SIZE + TR.width(setting.getName()) + 2;
+		return BOX_SIZE + TR.width(setting.getDisplayName()) + 2;
 	}
 	
 	@Override

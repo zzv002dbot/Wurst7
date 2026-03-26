@@ -35,7 +35,17 @@ public abstract class OtherFeature extends Feature
 	@Override
 	public String getDescription()
 	{
-		return WURST.translate(description);
+		if(description.startsWith("description.wurst."))
+			return WURST.translate(description);
+		
+		if(WURST.getTranslator() == null)
+			return description;
+		
+		String[] lines = description.split("\n", -1);
+		for(int i = 0; i < lines.length; i++)
+			lines[i] = WURST.getTranslator().translateRaw(lines[i]);
+		
+		return String.join("\n", lines);
 	}
 	
 	@Override

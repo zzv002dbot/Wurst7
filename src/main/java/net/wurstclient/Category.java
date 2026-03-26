@@ -29,4 +29,12 @@ public enum Category
 	{
 		return name;
 	}
+	
+	public String getDisplayName()
+	{
+		if(WurstClient.INSTANCE.getTranslator() == null)
+			return name;
+		
+		return WurstClient.INSTANCE.getTranslator().translateRaw(name);
+	}
 }

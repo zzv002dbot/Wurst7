@@ -46,7 +46,7 @@ public final class GetPosCmd extends Command
 	@Override
 	public String getPrimaryAction()
 	{
-		return "Get Position";
+		return trRaw("Get Position");
 	}
 	
 	@Override

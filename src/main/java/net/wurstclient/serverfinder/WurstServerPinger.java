@@ -15,6 +15,7 @@ import net.minecraft.client.multiplayer.ServerData.Type;
 import net.minecraft.client.multiplayer.ServerStatusPinger;
 import net.minecraft.server.network.EventLoopGroupHolder;
 import net.wurstclient.WurstClient;
+import net.wurstclient.util.ChatUtils;
 
 public class WurstServerPinger
 {
@@ -33,28 +34,29 @@ public class WurstServerPinger
 		server = new ServerData("", ip + ":" + port, Type.OTHER);
 		
 		new Thread(() -> pingInCurrentThread(ip, port),
-			"Wurst Server Pinger #" + threadNumber.incrementAndGet()).start();
+			ChatUtils.tr("Wurst Server Pinger #%s",
+				threadNumber.incrementAndGet())).start();
 	}
 	
 	private void pingInCurrentThread(String ip, int port)
 	{
 		ServerStatusPinger pinger = new ServerStatusPinger();
-		System.out.println("Pinging " + ip + ":" + port + "...");
+		System.out.println(ChatUtils.tr("Pinging %s:%s...", ip, port));
 		
 		try
 		{
 			pinger.pingServer(server, () -> {}, () -> {}, EventLoopGroupHolder
 				.remote(WurstClient.MC.options.useNativeTransport()));
-			System.out.println("Ping successful: " + ip + ":" + port);
+			System.out.println(ChatUtils.tr("Ping successful: %s:%s", ip, port));
 			
 		}catch(UnknownHostException e)
 		{
-			System.out.println("Unknown host: " + ip + ":" + port);
+			System.out.println(ChatUtils.tr("Unknown host: %s:%s", ip, port));
 			failed = true;
 			
 		}catch(Exception e2)
 		{
-			System.out.println("Ping failed: " + ip + ":" + port);
+			System.out.println(ChatUtils.tr("Ping failed: %s:%s", ip, port));
 			failed = true;
 		}
 		

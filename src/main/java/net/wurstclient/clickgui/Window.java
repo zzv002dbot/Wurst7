@@ -59,6 +59,14 @@ public class Window
 		return title;
 	}
 	
+	public final String getDisplayTitle()
+	{
+		if(WurstClient.INSTANCE.getTranslator() == null)
+			return title;
+		
+		return WurstClient.INSTANCE.getTranslator().translateRaw(title);
+	}
+	
 	public final void setTitle(String title)
 	{
 		this.title = title;
@@ -156,7 +164,7 @@ public class Window
 		maxChildWidth += 4;
 		
 		Font tr = WurstClient.MC.font;
-		int titleBarWidth = tr.width(title) + 4;
+		int titleBarWidth = tr.width(getDisplayTitle()) + 4;
 		if(minimizable)
 			titleBarWidth += 11;
 		if(pinnable)

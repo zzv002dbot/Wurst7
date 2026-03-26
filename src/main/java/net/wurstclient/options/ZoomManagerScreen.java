@@ -39,35 +39,37 @@ public class ZoomManagerScreen extends Screen implements PressAKeyCallback
 		CheckboxSetting scroll = zoom.getScrollSetting();
 		
 		addRenderableWidget(Button
-			.builder(Component.literal("Back"),
+			.builder(Component.literal(tr("gui.wurst.zoom_manager.button.back")),
 				b -> minecraft.setScreen(prevScreen))
 			.bounds(width / 2 - 100, height / 4 + 144 - 16, 200, 20).build());
 		
 		addRenderableWidget(Button
 			.builder(
-				Component.literal("Zoom Key: ")
+				Component.literal(tr("gui.wurst.zoom_manager.button.zoom_key"))
 					.append(zoom.getTranslatedKeybindName()),
 				b -> minecraft.setScreen(new PressAKeyScreen(this)))
 			.bounds(width / 2 - 79, height / 4 + 24 - 16, 158, 20).build());
 		
 		addRenderableWidget(Button
-			.builder(Component.literal("More"), b -> level.increaseValue())
+			.builder(Component.literal(tr("gui.wurst.zoom_manager.button.more")),
+				b -> level.increaseValue())
 			.bounds(width / 2 - 79, height / 4 + 72 - 16, 50, 20).build());
 		
 		addRenderableWidget(Button
-			.builder(Component.literal("Less"), b -> level.decreaseValue())
+			.builder(Component.literal(tr("gui.wurst.zoom_manager.button.less")),
+				b -> level.decreaseValue())
 			.bounds(width / 2 - 25, height / 4 + 72 - 16, 50, 20).build());
 		
 		addRenderableWidget(Button
-			.builder(Component.literal("Default"),
+			.builder(Component.literal(tr("gui.wurst.zoom_manager.button.default")),
 				b -> level.setValue(level.getDefaultValue()))
 			.bounds(width / 2 + 29, height / 4 + 72 - 16, 50, 20).build());
 		
 		addRenderableWidget(scrollButton =
 			Button
 				.builder(
-					Component.literal(
-						"Use Mouse Wheel: " + onOrOff(scroll.isChecked())),
+					Component.literal(tr("gui.wurst.zoom_manager.button.scroll",
+						onOrOff(scroll.isChecked()))),
 					b -> toggleScroll())
 				.bounds(width / 2 - 79, height / 4 + 96 - 16, 158, 20).build());
 	}
@@ -78,13 +80,13 @@ public class ZoomManagerScreen extends Screen implements PressAKeyCallback
 		CheckboxSetting scroll = zoom.getScrollSetting();
 		
 		scroll.setChecked(!scroll.isChecked());
-		scrollButton.setMessage(Component
-			.literal("Use Mouse Wheel: " + onOrOff(scroll.isChecked())));
+		scrollButton.setMessage(Component.literal(
+			tr("gui.wurst.zoom_manager.button.scroll", onOrOff(scroll.isChecked()))));
 	}
 	
 	private String onOrOff(boolean on)
 	{
-		return on ? "ON" : "OFF";
+		return tr(on ? "gui.wurst.generic.on" : "gui.wurst.generic.off");
 	}
 	
 	@Override
@@ -100,9 +102,11 @@ public class ZoomManagerScreen extends Screen implements PressAKeyCallback
 		ZoomOtf zoom = WurstClient.INSTANCE.getOtfs().zoomOtf;
 		SliderSetting level = zoom.getLevelSetting();
 		
-		context.drawCenteredString(font, "Zoom Manager", width / 2, 40,
+		context.drawCenteredString(font, tr("gui.wurst.zoom_manager.title"),
+			width / 2, 40,
 			CommonColors.WHITE);
-		context.drawString(font, "Zoom Level: " + level.getValueString(),
+		context.drawString(font,
+			tr("gui.wurst.zoom_manager.label.zoom_level", level.getValueString()),
 			width / 2 - 75, height / 4 + 44, WurstColors.VERY_LIGHT_GRAY);
 		
 		for(Renderable drawable : renderables)
@@ -115,5 +119,10 @@ public class ZoomManagerScreen extends Screen implements PressAKeyCallback
 		WurstClient.INSTANCE.getOtfs().zoomOtf.setBoundKey(key);
 		// Button text updates automatically because going back to this screen
 		// calls init(). Might be different in older MC versions.
+	}
+
+	private String tr(String key, Object... args)
+	{
+		return WurstClient.INSTANCE.translate(key, args);
 	}
 }

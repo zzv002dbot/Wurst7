@@ -50,36 +50,46 @@ public final class KeybindManagerScreen extends Screen
 		addWidget(listGui);
 		
 		addRenderableWidget(addButton = Button
-			.builder(Component.literal("Add"),
+			.builder(Component.literal(tr("gui.wurst.keybind_manager.button.add")),
 				b -> minecraft.setScreen(new KeybindEditorScreen(this)))
 			.bounds(width / 2 - 102, height - 52, 100, 20).build());
 		
 		addRenderableWidget(
-			editButton = Button.builder(Component.literal("Edit"), b -> edit())
+			editButton = Button
+				.builder(Component.literal(tr("gui.wurst.keybind_manager.button.edit")),
+					b -> edit())
 				.bounds(width / 2 + 2, height - 52, 100, 20).build());
 		
 		addRenderableWidget(removeButton =
-			Button.builder(Component.literal("Remove"), b -> remove())
+			Button
+				.builder(Component.literal(tr("gui.wurst.keybind_manager.button.remove")),
+					b -> remove())
 				.bounds(width / 2 - 102, height - 28, 100, 20).build());
 		
 		addRenderableWidget(backButton = Button
-			.builder(Component.literal("Back"),
+			.builder(Component.literal(tr("gui.wurst.keybind_manager.button.back")),
 				b -> minecraft.setScreen(prevScreen))
 			.bounds(width / 2 + 2, height - 28, 100, 20).build());
 		
-		addRenderableWidget(Button.builder(Component.literal("Reset Keybinds"),
-			b -> minecraft.setScreen(new ConfirmScreen(confirmed -> {
-				if(confirmed)
-					WurstClient.INSTANCE.getKeybinds()
-						.setKeybinds(KeybindList.DEFAULT_KEYBINDS);
-				minecraft.setScreen(this);
-			}, Component
-				.literal("Are you sure you want to reset your keybinds?"),
-				Component.literal("This cannot be undone!"))))
+		addRenderableWidget(Button
+			.builder(
+				Component
+					.literal(tr("gui.wurst.keybind_manager.button.reset_keybinds")),
+				b -> minecraft.setScreen(new ConfirmScreen(confirmed -> {
+					if(confirmed)
+						WurstClient.INSTANCE.getKeybinds()
+							.setKeybinds(KeybindList.DEFAULT_KEYBINDS);
+					minecraft.setScreen(this);
+				},
+					Component.literal(tr(
+						"gui.wurst.keybind_manager.confirm_reset.title")),
+					Component.literal(tr(
+						"gui.wurst.keybind_manager.confirm_reset.message")))))
 			.bounds(8, 8, 100, 20).build());
 		
 		addRenderableWidget(Button
-			.builder(Component.literal("Profiles..."),
+			.builder(
+				Component.literal(tr("gui.wurst.keybind_manager.button.profiles")),
 				b -> minecraft.setScreen(new KeybindProfilesScreen(this)))
 			.bounds(width - 108, 8, 100, 20).build());
 	}
@@ -145,11 +155,13 @@ public final class KeybindManagerScreen extends Screen
 	{
 		listGui.render(context, mouseX, mouseY, partialTicks);
 		
-		context.drawCenteredString(font, "Keybind Manager", width / 2, 8,
+		context.drawCenteredString(font, tr("gui.wurst.keybind_manager.title"),
+			width / 2, 8,
 			CommonColors.WHITE);
 		
 		int count = WurstClient.INSTANCE.getKeybinds().getAllKeybinds().size();
-		context.drawCenteredString(font, "Keybinds: " + count, width / 2, 20,
+		context.drawCenteredString(font,
+			tr("gui.wurst.keybind_manager.count", count), width / 2, 20,
 			CommonColors.WHITE);
 		
 		for(Renderable drawable : renderables)
@@ -176,7 +188,7 @@ public final class KeybindManagerScreen extends Screen
 		public Component getNarration()
 		{
 			return Component.translatable("narrator.select",
-				"Keybind " + keybind);
+				tr("gui.wurst.keybind_manager.narration.keybind", keybind));
 		}
 		
 		@Override
@@ -186,16 +198,23 @@ public final class KeybindManagerScreen extends Screen
 			int x = getContentX();
 			int y = getContentY();
 			
-			Font tr = minecraft.font;
+			Font fontRenderer = minecraft.font;
 			
-			String keyText = "Key: " + Keybind.getDisplayKey(keybind.getKey());
-			context.drawString(tr, keyText, x + 3, y + 3,
+			String keyText = tr("gui.wurst.keybind_manager.entry.key",
+				Keybind.getDisplayKey(keybind.getKey()));
+			context.drawString(fontRenderer, keyText, x + 3, y + 3,
 				WurstColors.VERY_LIGHT_GRAY, false);
 			
-			String cmdText = "Commands: " + keybind.getCommands();
-			context.drawString(tr, cmdText, x + 3, y + 15,
+			String cmdText = tr("gui.wurst.keybind_manager.entry.commands",
+				keybind.getCommands());
+			context.drawString(fontRenderer, cmdText, x + 3, y + 15,
 				CommonColors.LIGHT_GRAY, false);
 		}
+	}
+
+	private String tr(String key, Object... args)
+	{
+		return WurstClient.INSTANCE.translate(key, args);
 	}
 	
 	private final class ListGui

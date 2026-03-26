@@ -93,8 +93,9 @@ public final class NavigatorFeatureScreen extends NavigatorScreen
 						WurstClient.INSTANCE.getHax().tooManyHaxHack;
 					if(tooManyHax.isEnabled() && tooManyHax.isBlocked(feature))
 					{
-						ChatUtils.error(
-							feature.getName() + " is blocked by TooManyHax.");
+						ChatUtils.error(WurstClient.INSTANCE.translate(
+							"gui.wurst.clickgui.feature_blocked_by_toomanyhax",
+							feature.getDisplayName()));
 						return;
 					}
 					
@@ -110,22 +111,22 @@ public final class NavigatorFeatureScreen extends NavigatorScreen
 		}
 		
 		// type
-		text = "Type: ";
+		text = trRaw("Type: ");
 		if(feature instanceof Hack)
-			text += "Hack";
+			text += trRaw("Hack");
 		else if(feature instanceof Command)
-			text += "Command";
+			text += trRaw("Command");
 		else
-			text += "Other Feature";
+			text += trRaw("Other Feature");
 		
 		// category
 		if(feature.getCategory() != null)
-			text += ", Category: " + feature.getCategory().getName();
+			text += trRaw(", Category: ") + feature.getCategory().getDisplayName();
 		
 		// description
 		String description = feature.getWrappedDescription(300);
 		if(!description.isEmpty())
-			text += "\n\nDescription:\n" + description;
+			text += "\n\n" + trRaw("Description:") + "\n" + description;
 		
 		// area
 		Rectangle area = new Rectangle(middleX - 154, 60, 308, height - 103);
@@ -134,7 +135,7 @@ public final class NavigatorFeatureScreen extends NavigatorScreen
 		Collection<Setting> settings = feature.getSettings().values();
 		if(!settings.isEmpty())
 		{
-			text += "\n\nSettings:";
+			text += "\n\n" + trRaw("Settings:");
 			windowComponentY = getStringHeight(text) + 2;
 			
 			for(int i = 0; i < Math.ceil(window.getInnerHeight() / 9.0); i++)
@@ -146,7 +147,7 @@ public final class NavigatorFeatureScreen extends NavigatorScreen
 		if(!possibleKeybinds.isEmpty())
 		{
 			// heading
-			text += "\n\nKeybinds:";
+			text += "\n\n" + trRaw("Keybinds:");
 			
 			// add keybind button
 			ButtonData addKeybindButton =
@@ -199,15 +200,16 @@ public final class NavigatorFeatureScreen extends NavigatorScreen
 							noKeybindsSet = false;
 						text +=
 							"\n" + keybind.getKey().replace("key.keyboard.", "")
-								+ ": " + "Toggle " + feature.getName();
+								+ trRaw(": ") + trRaw("Toggle ")
+								+ feature.getDisplayName();
 						existingKeybinds.put(keybind.getKey(),
 							new PossibleKeybind(command,
-								"Toggle " + feature.getName()));
+								trRaw("Toggle ") + feature.getDisplayName()));
 					}
 				}
 			}
 			if(noKeybindsSet)
-				text += "\nNone";
+				text += "\n" + trRaw("None");
 			else
 			{
 				// remove keybind button
@@ -318,7 +320,8 @@ public final class NavigatorFeatureScreen extends NavigatorScreen
 		int txtColor = gui.getTxtColor();
 		
 		// title bar
-		context.drawCenteredString(minecraft.font, feature.getName(), middleX,
+		context.drawCenteredString(minecraft.font, feature.getDisplayName(),
+			middleX,
 			32, txtColor);
 		
 		// background
@@ -487,6 +490,14 @@ public final class NavigatorFeatureScreen extends NavigatorScreen
 		gui.closePopupsOutsideArea(window, bgx1, bgy1, bgx2, bgy3);
 		gui.renderPopups(context, mouseX, mouseY);
 		gui.renderTooltip(context, mouseX, mouseY);
+	}
+	
+	private String trRaw(String text, Object... args)
+	{
+		if(WurstClient.INSTANCE.getTranslator() == null)
+			return text;
+		
+		return WurstClient.INSTANCE.getTranslator().translateRaw(text, args);
 	}
 	
 	@Override

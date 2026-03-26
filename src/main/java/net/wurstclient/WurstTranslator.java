@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiConsumer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.google.common.collect.Lists;
 import com.google.gson.JsonParseException;
@@ -38,6 +40,10 @@ public class WurstTranslator implements ResourceManagerReloadListener
 	
 	private Map<String, String> currentLangStrings = Map.of();
 	private Map<String, String> englishOnlyStrings = Map.of();
+	private Map<String, String> currentLangRawStrings = Map.of();
+	private Map<String, String> englishOnlyRawStrings = Map.of();
+	private List<RawTemplate> currentLangRawTemplates = List.of();
+	private List<RawTemplate> englishOnlyRawTemplates = List.of();
 	
 	@Override
 	public void onResourceManagerReload(ResourceManager manager)
@@ -55,6 +61,19 @@ public class WurstTranslator implements ResourceManagerReloadListener
 		loadTranslations(manager, List.of("en_us"), englishOnlyStrings::put);
 		this.englishOnlyStrings =
 			Collections.unmodifiableMap(englishOnlyStrings);
+		
+		HashMap<String, String> currentLangRawStrings = new HashMap<>();
+		loadRawTranslations(manager, getCurrentLangCodes(),
+			currentLangRawStrings::put);
+		this.currentLangRawStrings =
+			Collections.unmodifiableMap(currentLangRawStrings);
+		this.currentLangRawTemplates = buildRawTemplates(currentLangRawStrings);
+		
+		HashMap<String, String> englishOnlyRawStrings = new HashMap<>();
+		loadRawTranslations(manager, List.of("en_us"), englishOnlyRawStrings::put);
+		this.englishOnlyRawStrings =
+			Collections.unmodifiableMap(englishOnlyRawStrings);
+		this.englishOnlyRawTemplates = buildRawTemplates(englishOnlyRawStrings);
 	}
 	
 	/**
@@ -141,6 +160,52 @@ public class WurstTranslator implements ResourceManagerReloadListener
 		}
 	}
 	
+	/**
+	 * Translates an English literal string into the current language (or into
+	 * English if "Force English" is enabled). If no translation exists, returns
+	 * the original text unchanged.
+	 */
+	public String translateRaw(String text, Object... args)
+	{
+		if(args.length == 0 && text.contains("\n"))
+		{
+			String[] lines = text.split("\n", -1);
+			for(int i = 0; i < lines.length; i++)
+				lines[i] = translateRaw(lines[i]);
+			
+			return String.join("\n", lines);
+		}
+		
+		Map<String, String> map;
+		List<RawTemplate> templates;
+		
+		if(isForcedEnglish())
+		{
+			map = englishOnlyRawStrings;
+			templates = englishOnlyRawTemplates;
+			
+		}else
+		{
+			map = currentLangRawStrings;
+			templates = currentLangRawTemplates;
+		}
+		
+		String translated = map.get(text);
+		if(translated == null)
+			translated = tryTemplateMatch(text, templates);
+		if(translated == null)
+			translated = text;
+		
+		try
+		{
+			return String.format(translated, args);
+			
+		}catch(IllegalFormatException e)
+		{
+			return translated;
+		}
+	}
+	
 	public boolean isForcedEnglish()
 	{
 		return wurst.getOtfs().translationsOtf.getForceEnglish().isChecked();
@@ -212,6 +277,152 @@ public class WurstTranslator implements ResourceManagerReloadListener
 							+ langCode);
 					e.printStackTrace();
 				}
+		}
+	}
+	
+	private void loadRawTranslations(ResourceManager manager,
+		Iterable<String> langCodes, BiConsumer<String, String> entryConsumer)
+	{
+		for(String langCode : langCodes)
+		{
+			String langFilePath = "raw_translations/" + langCode + ".json";
+			Identifier langId =
+				Identifier.fromNamespaceAndPath("wurst", langFilePath);
+			
+			// IMPORTANT: Exceptions thrown by Language.loadFromJson() must
+			// be caught to prevent mod detection vulnerabilities using
+			// intentionally corrupted resource packs.
+			for(Resource resource : manager.getResourceStack(langId))
+				try(InputStream stream = resource.open())
+				{
+					if(isBuiltInWurstResourcePack(resource))
+						Language.loadFromJson(stream, entryConsumer);
+					
+				}catch(IOException | JsonParseException e)
+				{
+					System.out.println(
+						"Failed to load Wurst raw translations for " + langCode);
+					e.printStackTrace();
+					
+				}catch(Exception e)
+				{
+					System.out.println(
+						"Unexpected exception while loading Wurst raw translations for "
+							+ langCode);
+					e.printStackTrace();
+				}
+		}
+	}
+	
+	private List<RawTemplate> buildRawTemplates(Map<String, String> entries)
+	{
+		ArrayList<RawTemplate> templates = new ArrayList<>();
+		
+		entries.forEach((source, target) -> {
+			Pattern sourceRegex = buildSourceTemplateRegex(source);
+			if(sourceRegex != null)
+				templates.add(new RawTemplate(source, target, sourceRegex));
+		});
+		
+		templates.sort((a, b) -> Integer.compare(b.sourceTemplate.length(),
+			a.sourceTemplate.length()));
+		return Collections.unmodifiableList(templates);
+	}
+	
+	private Pattern buildSourceTemplateRegex(String source)
+	{
+		StringBuilder regex = new StringBuilder("^");
+		boolean hasPlaceholder = false;
+		
+		for(int i = 0; i < source.length(); i++)
+		{
+			char c = source.charAt(i);
+			if(c != '%')
+			{
+				regex.append(Pattern.quote(String.valueOf(c)));
+				continue;
+			}
+			
+			if(i + 1 >= source.length())
+				return null;
+			
+			if(source.charAt(i + 1) == '%')
+			{
+				regex.append("%");
+				i++;
+				continue;
+			}
+			
+			int placeholderEnd = i + 1;
+			while(placeholderEnd < source.length()
+				&& !Character.isLetter(source.charAt(placeholderEnd)))
+			{
+				if(Character.isWhitespace(source.charAt(placeholderEnd)))
+					return null;
+				
+				placeholderEnd++;
+			}
+			
+			if(placeholderEnd >= source.length())
+				return null;
+			
+			char type = source.charAt(placeholderEnd);
+			if(type == 'n')
+			{
+				regex.append("\\R");
+				i = placeholderEnd;
+				continue;
+			}
+			
+			hasPlaceholder = true;
+			regex.append("(.+?)");
+			i = placeholderEnd;
+		}
+		
+		if(!hasPlaceholder)
+			return null;
+		
+		regex.append("$");
+		return Pattern.compile(regex.toString(), Pattern.DOTALL);
+	}
+	
+	private String tryTemplateMatch(String input, List<RawTemplate> templates)
+	{
+		for(RawTemplate template : templates)
+		{
+			Matcher matcher = template.sourceRegex.matcher(input);
+			if(!matcher.matches())
+				continue;
+			
+			Object[] args = new Object[matcher.groupCount()];
+			for(int i = 0; i < args.length; i++)
+				args[i] = matcher.group(i + 1);
+			
+			try
+			{
+				return String.format(template.targetTemplate, args);
+				
+			}catch(IllegalFormatException e)
+			{
+				return template.targetTemplate;
+			}
+		}
+		
+		return null;
+	}
+	
+	private static final class RawTemplate
+	{
+		private final String sourceTemplate;
+		private final String targetTemplate;
+		private final Pattern sourceRegex;
+		
+		private RawTemplate(String sourceTemplate, String targetTemplate,
+			Pattern sourceRegex)
+		{
+			this.sourceTemplate = sourceTemplate;
+			this.targetTemplate = targetTemplate;
+			this.sourceRegex = sourceRegex;
 		}
 	}
 	

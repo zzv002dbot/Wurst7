@@ -61,7 +61,7 @@ public final class IpCmd extends Command
 	@Override
 	public String getPrimaryAction()
 	{
-		return "Get IP";
+		return trRaw("Get IP");
 	}
 	
 	@Override

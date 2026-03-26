@@ -9,6 +9,7 @@ package net.wurstclient.util;
 
 import java.util.List;
 import java.util.StringJoiner;
+import java.util.IllegalFormatException;
 
 import net.minecraft.client.GuiMessage;
 import net.minecraft.client.Minecraft;
@@ -54,22 +55,58 @@ public enum ChatUtils
 	
 	public static void message(String message)
 	{
-		component(Component.literal(message));
+		message(message, new Object[0]);
+	}
+	
+	public static void message(String message, Object... args)
+	{
+		component(Component.literal(tr(message, args)));
 	}
 	
 	public static void warning(String message)
 	{
-		message(WARNING_PREFIX + message);
+		warning(message, new Object[0]);
+	}
+	
+	public static void warning(String message, Object... args)
+	{
+		message(WARNING_PREFIX + message, args);
 	}
 	
 	public static void error(String message)
 	{
-		message(ERROR_PREFIX + message);
+		error(message, new Object[0]);
+	}
+	
+	public static void error(String message, Object... args)
+	{
+		message(ERROR_PREFIX + message, args);
 	}
 	
 	public static void syntaxError(String message)
 	{
-		message(SYNTAX_ERROR_PREFIX + message);
+		syntaxError(message, new Object[0]);
+	}
+	
+	public static void syntaxError(String message, Object... args)
+	{
+		message(SYNTAX_ERROR_PREFIX + message, args);
+	}
+	
+	public static String tr(String message, Object... args)
+	{
+		WurstClient wurst = WurstClient.INSTANCE;
+		if(wurst.getTranslator() != null)
+			return wurst.getTranslator().translateRaw(message, args);
+		
+		try
+		{
+			return String.format(message, args);
+			
+		}catch(IllegalFormatException e)
+		{
+			return message;
+		}
 	}
 	
 	public static String getAsString(GuiMessage.Line visible)

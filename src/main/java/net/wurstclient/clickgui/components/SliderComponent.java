@@ -156,7 +156,7 @@ public final class SliderComponent extends Component
 		RenderUtils.drawBorder2D(context, xk1, yk1, xk2, yk2, 0x80101010);
 		
 		// text
-		String name = setting.getName();
+		String name = setting.getDisplayName();
 		String value = setting.getValueString();
 		int valueWidth = TR.width(value);
 		int txtColor = GUI.getTxtColor();
@@ -169,12 +169,11 @@ public final class SliderComponent extends Component
 		String tooltip = setting.getWrappedDescription(200);
 		
 		if(setting.isDisabled())
-			tooltip += "\n\nThis slider is disabled.";
+			tooltip +=
+				"\n\n" + WURST.translate("gui.wurst.clickgui.slider_disabled");
 		else if(setting.isLocked())
-		{
-			tooltip += "\n\nThis slider is locked to ";
-			tooltip += setting.getValueString() + ".";
-		}
+			tooltip += "\n\n" + WURST.translate(
+				"gui.wurst.clickgui.slider_locked_to", setting.getValueString());
 		
 		return tooltip;
 	}
@@ -191,7 +190,7 @@ public final class SliderComponent extends Component
 	@Override
 	public int getDefaultWidth()
 	{
-		int nameWidth = TR.width(setting.getName());
+		int nameWidth = TR.width(setting.getDisplayName());
 		int valueWidth = TR.width(setting.getValueString());
 		return nameWidth + valueWidth + 6;
 	}

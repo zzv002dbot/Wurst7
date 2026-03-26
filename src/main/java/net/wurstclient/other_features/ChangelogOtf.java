@@ -13,6 +13,7 @@ import net.wurstclient.SearchTags;
 import net.wurstclient.WurstClient;
 import net.wurstclient.other_feature.OtherFeature;
 import net.wurstclient.update.Version;
+import net.wurstclient.util.ChatUtils;
 
 @SearchTags({"change log", "wurst update", "release notes", "what's new",
 	"what is new", "new features", "recently added features"})
@@ -27,7 +28,7 @@ public final class ChangelogOtf extends OtherFeature
 	@Override
 	public String getPrimaryAction()
 	{
-		return "View Changelog";
+		return ChatUtils.tr("View Changelog");
 	}
 	
 	@Override

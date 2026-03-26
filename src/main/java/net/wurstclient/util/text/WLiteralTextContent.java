@@ -9,6 +9,8 @@ package net.wurstclient.util.text;
 
 import java.util.Objects;
 
+import net.wurstclient.WurstClient;
+
 public final class WLiteralTextContent implements WTextContent
 {
 	public static final WLiteralTextContent EMPTY = new WLiteralTextContent("");
@@ -23,6 +25,13 @@ public final class WLiteralTextContent implements WTextContent
 	@Override
 	public String toString()
 	{
-		return text;
+		if(WurstClient.INSTANCE.getTranslator() == null)
+			return text;
+		
+		String[] lines = text.split("\n", -1);
+		for(int i = 0; i < lines.length; i++)
+			lines[i] = WurstClient.INSTANCE.getTranslator().translateRaw(lines[i]);
+		
+		return String.join("\n", lines);
 	}
 }

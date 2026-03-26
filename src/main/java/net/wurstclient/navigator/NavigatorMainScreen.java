@@ -166,7 +166,9 @@ public final class NavigatorMainScreen extends NavigatorScreen
 		
 		if(tooManyHax.isEnabled() && tooManyHax.isBlocked(feature))
 		{
-			ChatUtils.error(feature.getName() + " is blocked by TooManyHax.");
+			ChatUtils.error(WurstClient.INSTANCE.translate(
+				"gui.wurst.clickgui.feature_blocked_by_toomanyhax",
+				feature.getDisplayName()));
 			return;
 		}
 		
@@ -226,7 +228,7 @@ public final class NavigatorMainScreen extends NavigatorScreen
 		// search bar
 		if(!clickTimerRunning)
 		{
-			context.drawString(WurstClient.MC.font, "Search: ", middleX - 150,
+			context.drawString(WurstClient.MC.font, trRaw("Search: "), middleX - 150,
 				32, txtColor);
 			searchBar.render(context, mouseX, mouseY, partialTicks);
 		}
@@ -380,7 +382,7 @@ public final class NavigatorMainScreen extends NavigatorScreen
 		if(!clickTimerRunning)
 		{
 			Font tr = minecraft.font;
-			String buttonText = feature.getName();
+			String buttonText = feature.getDisplayName();
 			int bx = area.x + 4;
 			int by = area.y + 4;
 			int txtColor = gui.getTxtColor();
@@ -391,6 +393,14 @@ public final class NavigatorMainScreen extends NavigatorScreen
 	public void setExpanding(boolean expanding)
 	{
 		this.expanding = expanding;
+	}
+	
+	private String trRaw(String text, Object... args)
+	{
+		if(WurstClient.INSTANCE.getTranslator() == null)
+			return text;
+		
+		return WurstClient.INSTANCE.getTranslator().translateRaw(text, args);
 	}
 	
 	@Override

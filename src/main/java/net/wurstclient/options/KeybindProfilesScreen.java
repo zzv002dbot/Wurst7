@@ -50,22 +50,28 @@ public final class KeybindProfilesScreen extends Screen
 			WurstClient.INSTANCE.getKeybinds().listProfiles());
 		addWidget(listGui);
 		
-		addRenderableWidget(
-			Button.builder(Component.literal("Open Folder"), b -> openFolder())
-				.bounds(8, 8, 100, 20).build());
+		addRenderableWidget(Button
+			.builder(
+				Component.literal(tr("gui.wurst.keybind_profiles.button.open_folder")),
+				b -> openFolder())
+			.bounds(8, 8, 100, 20).build());
 		
 		addRenderableWidget(Button
-			.builder(Component.literal("New Profile"),
+			.builder(Component.literal(
+				tr("gui.wurst.keybind_profiles.button.new_profile")),
 				b -> minecraft.setScreen(
 					new EnterProfileNameScreen(this, this::newProfile)))
 			.bounds(width / 2 - 154, height - 48, 100, 20).build());
 		
 		loadButton = addRenderableWidget(
-			Button.builder(Component.literal("Load"), b -> loadSelected())
+			Button
+				.builder(
+					Component.literal(tr("gui.wurst.keybind_profiles.button.load")),
+					b -> loadSelected())
 				.bounds(width / 2 - 50, height - 48, 100, 20).build());
 		
 		addRenderableWidget(Button
-			.builder(Component.literal("Cancel"),
+			.builder(Component.literal(tr("gui.wurst.keybind_profiles.button.cancel")),
 				b -> minecraft.setScreen(prevScreen))
 			.bounds(width / 2 + 54, height - 48, 100, 20).build());
 	}
@@ -136,7 +142,8 @@ public final class KeybindProfilesScreen extends Screen
 	{
 		listGui.render(context, mouseX, mouseY, partialTicks);
 		
-		context.drawCenteredString(minecraft.font, "Keybind Profiles",
+		context.drawCenteredString(minecraft.font,
+			tr("gui.wurst.keybind_profiles.title"),
 			width / 2, 12, CommonColors.WHITE);
 		
 		for(Renderable drawable : renderables)
@@ -144,8 +151,8 @@ public final class KeybindProfilesScreen extends Screen
 		
 		if(loadButton.isHoveredOrFocused() && !loadButton.active)
 			context.setComponentTooltipForNextFrame(font,
-				Arrays
-					.asList(Component.literal("You must first select a file.")),
+				Arrays.asList(
+					Component.literal(tr("gui.wurst.keybind_profiles.select_file_first"))),
 				mouseX, mouseY);
 	}
 	
@@ -169,7 +176,8 @@ public final class KeybindProfilesScreen extends Screen
 		public Component getNarration()
 		{
 			return Component.translatable("narrator.select",
-				"Profile " + path.getFileName());
+				tr("gui.wurst.keybind_profiles.narration.profile",
+					path.getFileName()));
 		}
 		
 		@Override
@@ -209,5 +217,10 @@ public final class KeybindProfilesScreen extends Screen
 			KeybindProfilesScreen.Entry selected = getSelected();
 			return selected != null ? selected.path : null;
 		}
+	}
+
+	private String tr(String key, Object... args)
+	{
+		return WurstClient.INSTANCE.translate(key, args);
 	}
 }

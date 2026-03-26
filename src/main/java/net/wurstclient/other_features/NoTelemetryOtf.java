@@ -11,6 +11,7 @@ import net.wurstclient.DontBlock;
 import net.wurstclient.SearchTags;
 import net.wurstclient.other_feature.OtherFeature;
 import net.wurstclient.settings.CheckboxSetting;
+import net.wurstclient.util.ChatUtils;
 
 @DontBlock
 @SearchTags({"privacy", "data", "tracking", "snooper", "spyware"})
@@ -35,7 +36,8 @@ public final class NoTelemetryOtf extends OtherFeature
 	@Override
 	public String getPrimaryAction()
 	{
-		return isEnabled() ? "Re-enable Telemetry" : "Disable Telemetry";
+		return isEnabled() ? ChatUtils.tr("Re-enable Telemetry")
+			: ChatUtils.tr("Disable Telemetry");
 	}
 	
 	@Override

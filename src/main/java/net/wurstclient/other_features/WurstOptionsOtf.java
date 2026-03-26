@@ -19,6 +19,7 @@ import net.wurstclient.DontBlock;
 import net.wurstclient.SearchTags;
 import net.wurstclient.other_feature.OtherFeature;
 import net.wurstclient.settings.EnumSetting;
+import net.wurstclient.util.ChatUtils;
 
 @SearchTags({"wurst options", "settings"})
 @DontBlock
@@ -51,10 +52,12 @@ public final class WurstOptionsOtf extends OtherFeature
 	
 	public Button.Builder buttonBuilder(OnPress onPress)
 	{
-		MutableComponent message = Component.literal("            Options");
+		MutableComponent message =
+			Component.literal("            " + ChatUtils.tr("Options"));
 		
 		MutableComponent narration =
-			Component.translatable("gui.narrate.button", "Wurst Options");
+			Component.translatable("gui.narrate.button",
+				ChatUtils.tr("Wurst Options"));
 		
 		Tooltip tooltip = Tooltip.create(Component.literal(getDescription()));
 		
@@ -96,7 +99,7 @@ public final class WurstOptionsOtf extends OtherFeature
 		@Override
 		public String toString()
 		{
-			return name;
+			return ChatUtils.tr(name);
 		}
 	}
 }

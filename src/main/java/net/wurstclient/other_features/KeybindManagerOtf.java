@@ -11,6 +11,7 @@ import net.wurstclient.DontBlock;
 import net.wurstclient.SearchTags;
 import net.wurstclient.options.KeybindManagerScreen;
 import net.wurstclient.other_feature.OtherFeature;
+import net.wurstclient.util.ChatUtils;
 
 @SearchTags({"KeybindManager", "keybind manager", "KeybindsManager",
 	"keybinds manager"})
@@ -26,7 +27,7 @@ public final class KeybindManagerOtf extends OtherFeature
 	@Override
 	public String getPrimaryAction()
 	{
-		return "Open Keybind Manager";
+		return ChatUtils.tr("Open Keybind Manager");
 	}
 	
 	@Override

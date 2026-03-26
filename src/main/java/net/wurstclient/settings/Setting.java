@@ -13,6 +13,7 @@ import java.util.Set;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import net.wurstclient.WurstClient;
 import net.wurstclient.clickgui.Component;
 import net.wurstclient.keybinds.PossibleKeybind;
 import net.wurstclient.util.ChatUtils;
@@ -32,6 +33,18 @@ public abstract class Setting
 	public final String getName()
 	{
 		return name;
+	}
+	
+	/**
+	 * Localized display name for GUI/HUD only.
+	 * Use {@link #getName()} for commands, config keys and IDs.
+	 */
+	public final String getDisplayName()
+	{
+		if(WurstClient.INSTANCE.getTranslator() == null)
+			return name;
+		
+		return WurstClient.INSTANCE.getTranslator().translateRaw(name);
 	}
 	
 	public final String getDescription()

@@ -41,6 +41,18 @@ public abstract class Feature
 	
 	public abstract String getName();
 	
+	/**
+	 * Localized display name for GUI/HUD only.
+	 * Use {@link #getName()} for commands, config keys and IDs.
+	 */
+	public String getDisplayName()
+	{
+		if(WURST.getTranslator() == null)
+			return getName();
+		
+		return WURST.getTranslator().translateRaw(getName());
+	}
+	
 	public abstract String getDescription();
 	
 	public String getWrappedDescription(int width)

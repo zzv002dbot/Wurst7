@@ -159,13 +159,13 @@ public final class TooManyHaxCmd extends Command
 	private String getType(Feature feature)
 	{
 		if(feature instanceof Hack)
-			return "hack";
+			return trRaw("hack");
 		
 		if(feature instanceof Command)
-			return "command";
+			return trRaw("command");
 		
 		if(feature instanceof OtherFeature)
-			return "feature";
+			return trRaw("feature");
 		
 		throw new IllegalStateException();
 	}

@@ -46,7 +46,7 @@ public final class TabGui implements KeyPressListener
 		
 		LinkedHashMap<Category, Tab> tabMap = new LinkedHashMap<>();
 		for(Category category : Category.values())
-			tabMap.put(category, new Tab(category.getName()));
+			tabMap.put(category, new Tab(category.getDisplayName()));
 		
 		ArrayList<Feature> features = new ArrayList<>();
 		features.addAll(WURST.getHax().getAllHax());
@@ -161,7 +161,7 @@ public final class TabGui implements KeyPressListener
 			for(int i = 0; i < tab.features.size(); i++)
 			{
 				Feature feature = tab.features.get(i);
-				String fName = feature.getName();
+				String fName = feature.getDisplayName();
 				
 				if(feature.isEnabled())
 					fName = "\u00a7a" + fName + "\u00a7r";
@@ -209,7 +209,7 @@ public final class TabGui implements KeyPressListener
 			width = 64;
 			for(Feature feature : features)
 			{
-				int fWidth = MC.font.width(feature.getName()) + 10;
+				int fWidth = MC.font.width(feature.getDisplayName()) + 10;
 				if(fWidth > width)
 					width = fWidth;
 			}
@@ -247,8 +247,9 @@ public final class TabGui implements KeyPressListener
 			TooManyHaxHack tooManyHax = WURST.getHax().tooManyHaxHack;
 			if(tooManyHax.isEnabled() && tooManyHax.isBlocked(feature))
 			{
-				ChatUtils
-					.error(feature.getName() + " is blocked by TooManyHax.");
+				ChatUtils.error(WURST.translate(
+					"gui.wurst.clickgui.feature_blocked_by_toomanyhax",
+					feature.getDisplayName()));
 				return;
 			}
 			

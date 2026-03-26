@@ -46,7 +46,7 @@ public class WurstOptionsScreen extends Screen
 	public void init()
 	{
 		addRenderableWidget(Button
-			.builder(Component.literal("Back"),
+			.builder(Component.literal(tr("gui.wurst.options.button.back")),
 				b -> minecraft.setScreen(prevScreen))
 			.bounds(width / 2 - 100, height / 4 + 144 - 16, 200, 20).build());
 		
@@ -66,34 +66,28 @@ public class WurstOptionsScreen extends Screen
 			wurst.getOtfs().translationsOtf.getForceEnglish();
 		
 		new WurstOptionsButton(-154, 24,
-			() -> "Click Friends: "
-				+ (middleClickFriends.isChecked() ? "ON" : "OFF"),
+			() -> tr("gui.wurst.options.button.click_friends",
+				onOrOff(middleClickFriends.isChecked())),
 			middleClickFriends.getWrappedDescription(200),
 			b -> middleClickFriends
 				.setChecked(!middleClickFriends.isChecked()));
 		
 		new WurstOptionsButton(-154, 48,
-			() -> "Count Users: " + (plausible.isEnabled() ? "ON" : "OFF"),
-			"Counts how many people are using Wurst and which versions are the"
-				+ " most popular. This data helps me to decide when I can stop"
-				+ " supporting old versions.\n\n"
-				+ "These statistics are completely anonymous, never sold, and"
-				+ " stay in the EU (I'm self-hosting Plausible in Germany)."
-				+ " There are no cookies or persistent identifiers"
-				+ " (see plausible.io).",
+			() -> tr("gui.wurst.options.button.count_users",
+				onOrOff(plausible.isEnabled())),
+			tr("gui.wurst.options.tooltip.count_users"),
 			b -> plausible.setEnabled(!plausible.isEnabled()));
 		
 		new WurstOptionsButton(-154, 72,
-			() -> "Spoof Vanilla: "
-				+ (vanillaSpoofOtf.isEnabled() ? "ON" : "OFF"),
+			() -> tr("gui.wurst.options.button.spoof_vanilla",
+				onOrOff(vanillaSpoofOtf.isEnabled())),
 			vanillaSpoofOtf.getDescription(),
 			b -> vanillaSpoofOtf.doPrimaryAction());
 		
 		new WurstOptionsButton(-154, 96,
-			() -> "Translations: " + (!forceEnglish.isChecked() ? "ON" : "OFF"),
-			"Allows text in Wurst to be displayed in other languages than"
-				+ " English. It will use the same language that Minecraft is"
-				+ " set to.\n\n" + "This is an experimental feature!",
+			() -> tr("gui.wurst.options.button.translations",
+				onOrOff(!forceEnglish.isChecked())),
+			tr("description.wurst.other_feature.translations"),
 			b -> forceEnglish.setChecked(!forceEnglish.isChecked()));
 	}
 	
@@ -101,18 +95,19 @@ public class WurstOptionsScreen extends Screen
 	{
 		XRayHack xRayHack = WurstClient.INSTANCE.getHax().xRayHack;
 		
-		new WurstOptionsButton(-50, 24, () -> "Keybinds",
-			"Keybinds allow you to toggle any hack or command by simply"
-				+ " pressing a button.",
+		new WurstOptionsButton(-50, 24,
+			() -> tr("gui.wurst.options.button.keybinds"),
+			tr("gui.wurst.options.tooltip.keybinds"),
 			b -> minecraft.setScreen(new KeybindManagerScreen(this)));
 		
-		new WurstOptionsButton(-50, 48, () -> "X-Ray Blocks",
-			"Manager for the blocks that X-Ray will show.",
+		new WurstOptionsButton(-50, 48,
+			() -> tr("gui.wurst.options.button.xray_blocks"),
+			tr("gui.wurst.options.tooltip.xray_blocks"),
 			b -> xRayHack.openBlockListEditor(this));
 		
-		new WurstOptionsButton(-50, 72, () -> "Zoom",
-			"The Zoom Manager allows you to change the zoom key and how far it"
-				+ " will zoom in.",
+		new WurstOptionsButton(-50, 72,
+			() -> tr("gui.wurst.options.button.zoom"),
+			tr("gui.wurst.options.tooltip.zoom"),
 			b -> minecraft.setScreen(new ZoomManagerScreen(this)));
 	}
 	
@@ -120,25 +115,27 @@ public class WurstOptionsScreen extends Screen
 	{
 		OS os = Util.getPlatform();
 		
-		new WurstOptionsButton(54, 24, () -> "Official Website",
+		new WurstOptionsButton(54, 24,
+			() -> tr("gui.wurst.options.button.official_website"),
 			"§n§lWurstClient.net",
 			b -> os.openUri("https://www.wurstclient.net/options-website/"));
 		
-		new WurstOptionsButton(54, 48, () -> "Wurst Wiki", "§n§lWurst.Wiki",
+		new WurstOptionsButton(54, 48,
+			() -> tr("gui.wurst.options.button.wurst_wiki"), "§n§lWurst.Wiki",
 			b -> os.openUri("https://www.wurstclient.net/options-wiki/"));
 		
-		new WurstOptionsButton(54, 72, () -> "WurstForum", "§n§lWurstForum.net",
+		new WurstOptionsButton(54, 72,
+			() -> tr("gui.wurst.options.button.wurst_forum"),
+			"§n§lWurstForum.net",
 			b -> os.openUri("https://www.wurstclient.net/options-forum/"));
 		
-		new WurstOptionsButton(54, 96, () -> "Twitter", "@Wurst_Imperium",
+		new WurstOptionsButton(54, 96,
+			() -> tr("gui.wurst.options.button.twitter"), "@Wurst_Imperium",
 			b -> os.openUri("https://www.wurstclient.net/options-twitter/"));
 		
-		new WurstOptionsButton(54, 120, () -> "Donate",
-			"§n§lWurstClient.net/donate\n"
-				+ "Donate now to help me keep the Wurst Client alive and free"
-				+ " to use for everyone.\n\n"
-				+ "Every bit helps and is much appreciated! You can also get a"
-				+ " few cool perks in return.",
+		new WurstOptionsButton(54, 120,
+			() -> tr("gui.wurst.options.button.donate"),
+			tr("gui.wurst.options.tooltip.donate"),
 			b -> os.openUri("https://www.wurstclient.net/options-donate/"));
 	}
 	
@@ -162,20 +159,34 @@ public class WurstOptionsScreen extends Screen
 	
 	private void renderTitles(GuiGraphics context)
 	{
-		Font tr = minecraft.font;
+		Font fontRenderer = minecraft.font;
 		int middleX = width / 2;
 		int y1 = 40;
 		int y2 = height / 4 + 24 - 28;
 		
-		context.drawCenteredString(tr, "Wurst Options", middleX, y1,
+		context.drawCenteredString(fontRenderer, tr("gui.wurst.options.title"),
+			middleX, y1,
 			CommonColors.WHITE);
 		
-		context.drawCenteredString(tr, "Settings", middleX - 104, y2,
+		context.drawCenteredString(fontRenderer,
+			tr("gui.wurst.options.category.settings"), middleX - 104, y2,
 			WurstColors.VERY_LIGHT_GRAY);
-		context.drawCenteredString(tr, "Managers", middleX, y2,
+		context.drawCenteredString(fontRenderer,
+			tr("gui.wurst.options.category.managers"), middleX, y2,
 			WurstColors.VERY_LIGHT_GRAY);
-		context.drawCenteredString(tr, "Links", middleX + 104, y2,
+		context.drawCenteredString(fontRenderer,
+			tr("gui.wurst.options.category.links"), middleX + 104, y2,
 			WurstColors.VERY_LIGHT_GRAY);
+	}
+
+	private String tr(String key, Object... args)
+	{
+		return WurstClient.INSTANCE.translate(key, args);
+	}
+
+	private String onOrOff(boolean on)
+	{
+		return tr(on ? "gui.wurst.generic.on" : "gui.wurst.generic.off");
 	}
 	
 	private void renderButtonTooltip(GuiGraphics context, int mouseX,

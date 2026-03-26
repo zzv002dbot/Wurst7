@@ -14,6 +14,7 @@ import net.wurstclient.SearchTags;
 import net.wurstclient.events.ConnectionPacketOutputListener;
 import net.wurstclient.other_feature.OtherFeature;
 import net.wurstclient.settings.CheckboxSetting;
+import net.wurstclient.util.ChatUtils;
 
 @DontBlock
 @SearchTags({"vanilla spoof", "AntiFabric", "anti fabric", "LibHatesMods",
@@ -68,7 +69,7 @@ public final class VanillaSpoofOtf extends OtherFeature
 	@Override
 	public String getPrimaryAction()
 	{
-		return isEnabled() ? "Disable" : "Enable";
+		return isEnabled() ? ChatUtils.tr("Disable") : ChatUtils.tr("Enable");
 	}
 	
 	@Override

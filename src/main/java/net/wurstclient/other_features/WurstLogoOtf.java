@@ -15,6 +15,7 @@ import net.wurstclient.SearchTags;
 import net.wurstclient.other_feature.OtherFeature;
 import net.wurstclient.settings.ColorSetting;
 import net.wurstclient.settings.EnumSetting;
+import net.wurstclient.util.ChatUtils;
 
 @SearchTags({"wurst logo", "top left corner"})
 @DontBlock
@@ -78,7 +79,7 @@ public final class WurstLogoOtf extends OtherFeature
 		@Override
 		public String toString()
 		{
-			return name;
+			return ChatUtils.tr(name);
 		}
 	}
 }

@@ -85,7 +85,7 @@ public final class EnchantCmd extends Command
 	@Override
 	public String getPrimaryAction()
 	{
-		return "Enchant Held Item";
+		return trRaw("Enchant Held Item");
 	}
 	
 	@Override

@@ -26,8 +26,6 @@ public abstract class Command extends Feature
 		this.description = Objects.requireNonNull(description);
 		
 		Objects.requireNonNull(syntax);
-		if(syntax.length > 0)
-			syntax[0] = "Syntax: " + syntax[0];
 		this.syntax = syntax;
 		
 		if(name.contains(" "))
@@ -52,13 +50,13 @@ public abstract class Command extends Feature
 	@Override
 	public final String getDescription()
 	{
-		String description = this.description;
+		String description = trRawLines(this.description);
 		
 		if(syntax.length > 0)
 			description += "\n";
 		
 		for(String line : syntax)
-			description += "\n" + line;
+			description += "\n" + trRaw("Syntax: %s", line);
 		
 		return description;
 	}
@@ -74,7 +72,31 @@ public abstract class Command extends Feature
 			ChatUtils.message(line);
 		
 		for(String line : syntax)
-			ChatUtils.message(line);
+			ChatUtils.message(trRaw("Syntax: %s", line));
+	}
+
+	protected final String trRaw(String text, Object... args)
+	{
+		if(WURST.getTranslator() == null)
+			try
+			{
+				return String.format(text, args);
+				
+			}catch(Exception e)
+			{
+				return text;
+			}
+		
+		return WURST.getTranslator().translateRaw(text, args);
+	}
+	
+	private String trRawLines(String text)
+	{
+		String[] lines = text.split("\n", -1);
+		for(int i = 0; i < lines.length; i++)
+			lines[i] = trRaw(lines[i]);
+		
+		return String.join("\n", lines);
 	}
 	
 	@Override

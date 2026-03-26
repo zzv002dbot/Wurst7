@@ -18,6 +18,7 @@ import net.wurstclient.other_feature.OtherFeature;
 import net.wurstclient.settings.CheckboxSetting;
 import net.wurstclient.settings.ColorSetting;
 import net.wurstclient.settings.EnumSetting;
+import net.wurstclient.util.ChatUtils;
 
 @SearchTags({"hack list", "HakList", "hak list", "HacksList", "hacks list",
 	"HaxList", "hax list", "ArrayList", "array list", "ModList", "mod list",
@@ -138,7 +139,7 @@ public final class HackListOtf extends OtherFeature
 		@Override
 		public String toString()
 		{
-			return name;
+			return ChatUtils.tr(name);
 		}
 	}
 	
@@ -158,7 +159,7 @@ public final class HackListOtf extends OtherFeature
 		@Override
 		public String toString()
 		{
-			return name;
+			return ChatUtils.tr(name);
 		}
 	}
 	
@@ -181,7 +182,7 @@ public final class HackListOtf extends OtherFeature
 		@Override
 		public String toString()
 		{
-			return name;
+			return ChatUtils.tr(name);
 		}
 	}
 }

@@ -54,16 +54,17 @@ public final class KeybindEditorScreen extends Screen
 	public void init()
 	{
 		addRenderableWidget(Button
-			.builder(Component.literal("Change Key"),
+			.builder(Component.literal(tr("gui.wurst.keybind_editor.button.change_key")),
 				b -> minecraft.setScreen(new PressAKeyScreen(this)))
 			.bounds(width / 2 - 100, 60, 200, 20).build());
 		
 		addRenderableWidget(
-			Button.builder(Component.literal("Save"), b -> save())
+			Button.builder(Component.literal(tr("gui.wurst.keybind_editor.button.save")),
+				b -> save())
 				.bounds(width / 2 - 100, height / 4 + 72, 200, 20).build());
 		
 		addRenderableWidget(Button
-			.builder(Component.literal("Cancel"),
+			.builder(Component.literal(tr("gui.wurst.keybind_editor.button.cancel")),
 				b -> minecraft.setScreen(prevScreen))
 			.bounds(width / 2 - 100, height / 4 + 96, 200, 20).build());
 		
@@ -99,13 +100,17 @@ public final class KeybindEditorScreen extends Screen
 		float partialTicks)
 	{
 		context.drawCenteredString(font,
-			(oldKey != null ? "Edit" : "Add") + " Keybind", width / 2, 20,
+			oldKey != null ? tr("gui.wurst.keybind_editor.title.edit")
+				: tr("gui.wurst.keybind_editor.title.add"),
+			width / 2, 20,
 			CommonColors.WHITE);
 		
-		context.drawString(font, "Key: " + Keybind.getDisplayKey(key),
+		context.drawString(font,
+			tr("gui.wurst.keybind_editor.label.key",
+				Keybind.getDisplayKey(key)),
 			width / 2 - 100, 47, WurstColors.VERY_LIGHT_GRAY);
-		context.drawString(font, "Commands (separated by ';')", width / 2 - 100,
-			87, WurstColors.VERY_LIGHT_GRAY);
+		context.drawString(font, tr("gui.wurst.keybind_editor.label.commands"),
+			width / 2 - 100, 87, WurstColors.VERY_LIGHT_GRAY);
 		
 		commandField.render(context, mouseX, mouseY, partialTicks);
 		
@@ -123,5 +128,10 @@ public final class KeybindEditorScreen extends Screen
 	public void setKey(String key)
 	{
 		this.key = key;
+	}
+
+	private String tr(String key, Object... args)
+	{
+		return WurstClient.INSTANCE.translate(key, args);
 	}
 }

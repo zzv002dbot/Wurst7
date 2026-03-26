@@ -28,6 +28,7 @@ import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.CommonColors;
+import net.wurstclient.util.ChatUtils;
 
 public class CleanUpScreen extends Screen
 {
@@ -43,7 +44,7 @@ public class CleanUpScreen extends Screen
 	
 	public CleanUpScreen(JoinMultiplayerScreen prevScreen)
 	{
-		super(Component.literal(""));
+		super(Component.literal(ChatUtils.tr("Clean Up")));
 		this.prevScreen = prevScreen;
 	}
 	
@@ -51,10 +52,11 @@ public class CleanUpScreen extends Screen
 	public void init()
 	{
 		addRenderableWidget(new CleanUpButton(width / 2 - 100,
-			height / 4 + 168 + 12, () -> "Cancel", "", b -> onClose()));
+			height / 4 + 168 + 12, () -> ChatUtils.tr("Cancel"), "",
+			b -> onClose()));
 		
 		addRenderableWidget(cleanUpButton = new CleanUpButton(width / 2 - 100,
-			height / 4 + 144 + 12, () -> "Clean Up",
+			height / 4 + 144 + 12, () -> ChatUtils.tr("Clean Up"),
 			"Start the Clean Up with the settings\n" + "you specified above.\n"
 				+ "It might look like the game is not\n"
 				+ "responding for a couple of seconds.",
@@ -62,20 +64,22 @@ public class CleanUpScreen extends Screen
 		
 		addRenderableWidget(
 			new CleanUpButton(width / 2 - 100, height / 4 - 24 + 12,
-				() -> "Unknown Hosts: " + removeOrKeep(cleanupUnknown),
+				() -> ChatUtils.tr("Unknown Hosts: %s",
+					removeOrKeep(cleanupUnknown)),
 				"Servers that clearly don't exist.",
 				b -> cleanupUnknown = !cleanupUnknown));
 		
 		addRenderableWidget(
 			new CleanUpButton(width / 2 - 100, height / 4 + 0 + 12,
-				() -> "Outdated Servers: " + removeOrKeep(cleanupOutdated),
+				() -> ChatUtils.tr("Outdated Servers: %s",
+					removeOrKeep(cleanupOutdated)),
 				"Servers that run a different Minecraft\n"
 					+ "version than you.",
 				b -> cleanupOutdated = !cleanupOutdated));
 		
 		addRenderableWidget(
 			new CleanUpButton(width / 2 - 100, height / 4 + 24 + 12,
-				() -> "Failed Ping: " + removeOrKeep(cleanupFailed),
+				() -> ChatUtils.tr("Failed Ping: %s", removeOrKeep(cleanupFailed)),
 				"All servers that failed the last ping.\n"
 					+ "Make sure that the last ping is complete\n"
 					+ "before you do this. That means: Go back,\n"
@@ -85,21 +89,22 @@ public class CleanUpScreen extends Screen
 		
 		addRenderableWidget(
 			new CleanUpButton(width / 2 - 100, height / 4 + 48 + 12,
-				() -> "\"Grief me\" Servers: " + removeOrKeep(cleanupGriefMe),
+				() -> ChatUtils.tr("\"Grief me\" Servers: %s",
+					removeOrKeep(cleanupGriefMe)),
 				"All servers where the name starts with \"Grief me\"\n"
 					+ "Useful for removing servers found by ServerFinder.",
 				b -> cleanupGriefMe = !cleanupGriefMe));
 		
 		addRenderableWidget(
 			new CleanUpButton(width / 2 - 100, height / 4 + 72 + 12,
-				() -> "\u00a7cRemove all Servers: " + yesOrNo(removeAll),
+				() -> ChatUtils.tr("\u00a7cRemove all Servers: %s", yesOrNo(removeAll)),
 				"This will completely clear your server\n"
 					+ "list. \u00a7cUse with caution!\u00a7r",
 				b -> removeAll = !removeAll));
 		
 		addRenderableWidget(
 			new CleanUpButton(width / 2 - 100, height / 4 + 96 + 12,
-				() -> "Rename all Servers: " + yesOrNo(cleanupRename),
+				() -> ChatUtils.tr("Rename all Servers: %s", yesOrNo(cleanupRename)),
 				"Renames your servers to \"Grief me #1\",\n"
 					+ "\"Grief me #2\", etc.",
 				b -> cleanupRename = !cleanupRename));
@@ -107,12 +112,12 @@ public class CleanUpScreen extends Screen
 	
 	private String yesOrNo(boolean b)
 	{
-		return b ? "Yes" : "No";
+		return b ? ChatUtils.tr("Yes") : ChatUtils.tr("No");
 	}
 	
 	private String removeOrKeep(boolean b)
 	{
-		return b ? "Remove" : "Keep";
+		return b ? ChatUtils.tr("Remove") : ChatUtils.tr("Keep");
 	}
 	
 	private void cleanUp()
@@ -129,7 +134,7 @@ public class CleanUpScreen extends Screen
 			for(int i = 0; i < prevScreen.getServers().size(); i++)
 			{
 				ServerData server = prevScreen.getServers().get(i);
-				server.name = "Grief me #" + (i + 1);
+				server.name = ChatUtils.tr("Grief me #%s", i + 1);
 			}
 		
 		saveServerList();
@@ -180,7 +185,12 @@ public class CleanUpScreen extends Screen
 	
 	private boolean isGriefMeServer(ServerData server)
 	{
-		return server.name != null && server.name.startsWith("Grief me");
+		if(server.name == null)
+			return false;
+		
+		String translatedPrefix = ChatUtils.tr("Grief me");
+		return server.name.startsWith("Grief me")
+			|| server.name.startsWith(translatedPrefix);
 	}
 	
 	private void saveServerList()
@@ -217,10 +227,11 @@ public class CleanUpScreen extends Screen
 	public void render(GuiGraphics context, int mouseX, int mouseY,
 		float partialTicks)
 	{
-		context.drawCenteredString(font, "Clean Up", width / 2, 20,
+		context.drawCenteredString(font, ChatUtils.tr("Clean Up"), width / 2, 20,
 			CommonColors.WHITE);
 		context.drawCenteredString(font,
-			"Please select the servers you want to remove:", width / 2, 36,
+			ChatUtils.tr("Please select the servers you want to remove:"),
+			width / 2, 36,
 			CommonColors.LIGHT_GRAY);
 		
 		for(Renderable drawable : renderables)
@@ -279,7 +290,8 @@ public class CleanUpScreen extends Screen
 					new net.minecraft.network.chat.Component[lines.length];
 				for(int i = 0; i < lines.length; i++)
 					lines2[i] =
-						net.minecraft.network.chat.Component.literal(lines[i]);
+						net.minecraft.network.chat.Component
+							.literal(ChatUtils.tr(lines[i]));
 				
 				this.tooltip = Arrays.asList(lines2);
 			}
