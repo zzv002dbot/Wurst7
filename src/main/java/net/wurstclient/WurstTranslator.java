@@ -70,7 +70,8 @@ public class WurstTranslator implements ResourceManagerReloadListener
 		this.currentLangRawTemplates = buildRawTemplates(currentLangRawStrings);
 		
 		HashMap<String, String> englishOnlyRawStrings = new HashMap<>();
-		loadRawTranslations(manager, List.of("en_us"), englishOnlyRawStrings::put);
+		loadRawTranslations(manager, List.of("en_us"),
+			englishOnlyRawStrings::put);
 		this.englishOnlyRawStrings =
 			Collections.unmodifiableMap(englishOnlyRawStrings);
 		this.englishOnlyRawTemplates = buildRawTemplates(englishOnlyRawStrings);
@@ -300,8 +301,9 @@ public class WurstTranslator implements ResourceManagerReloadListener
 					
 				}catch(IOException | JsonParseException e)
 				{
-					System.out.println(
-						"Failed to load Wurst raw translations for " + langCode);
+					System.out
+						.println("Failed to load Wurst raw translations for "
+							+ langCode);
 					e.printStackTrace();
 					
 				}catch(Exception e)

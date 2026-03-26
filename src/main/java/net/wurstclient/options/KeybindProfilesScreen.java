@@ -50,30 +50,35 @@ public final class KeybindProfilesScreen extends Screen
 			WurstClient.INSTANCE.getKeybinds().listProfiles());
 		addWidget(listGui);
 		
-		addRenderableWidget(Button
-			.builder(
-				Component.literal(tr("gui.wurst.keybind_profiles.button.open_folder")),
-				b -> openFolder())
-			.bounds(8, 8, 100, 20).build());
+		addRenderableWidget(Button.builder(
+			Component
+				.literal(tr("gui.wurst.keybind_profiles.button.open_folder")),
+			b -> openFolder()).bounds(8, 8, 100, 20).build());
 		
 		addRenderableWidget(Button
-			.builder(Component.literal(
-				tr("gui.wurst.keybind_profiles.button.new_profile")),
+			.builder(
+				Component.literal(
+					tr("gui.wurst.keybind_profiles.button.new_profile")),
 				b -> minecraft.setScreen(
 					new EnterProfileNameScreen(this, this::newProfile)))
 			.bounds(width / 2 - 154, height - 48, 100, 20).build());
 		
-		loadButton = addRenderableWidget(
+		loadButton =
+			addRenderableWidget(
+				Button
+					.builder(
+						Component.literal(
+							tr("gui.wurst.keybind_profiles.button.load")),
+						b -> loadSelected())
+					.bounds(width / 2 - 50, height - 48, 100, 20).build());
+		
+		addRenderableWidget(
 			Button
 				.builder(
-					Component.literal(tr("gui.wurst.keybind_profiles.button.load")),
-					b -> loadSelected())
-				.bounds(width / 2 - 50, height - 48, 100, 20).build());
-		
-		addRenderableWidget(Button
-			.builder(Component.literal(tr("gui.wurst.keybind_profiles.button.cancel")),
-				b -> minecraft.setScreen(prevScreen))
-			.bounds(width / 2 + 54, height - 48, 100, 20).build());
+					Component.literal(
+						tr("gui.wurst.keybind_profiles.button.cancel")),
+					b -> minecraft.setScreen(prevScreen))
+				.bounds(width / 2 + 54, height - 48, 100, 20).build());
 	}
 	
 	private void openFolder()
@@ -143,16 +148,16 @@ public final class KeybindProfilesScreen extends Screen
 		listGui.render(context, mouseX, mouseY, partialTicks);
 		
 		context.drawCenteredString(minecraft.font,
-			tr("gui.wurst.keybind_profiles.title"),
-			width / 2, 12, CommonColors.WHITE);
+			tr("gui.wurst.keybind_profiles.title"), width / 2, 12,
+			CommonColors.WHITE);
 		
 		for(Renderable drawable : renderables)
 			drawable.render(context, mouseX, mouseY, partialTicks);
 		
 		if(loadButton.isHoveredOrFocused() && !loadButton.active)
 			context.setComponentTooltipForNextFrame(font,
-				Arrays.asList(
-					Component.literal(tr("gui.wurst.keybind_profiles.select_file_first"))),
+				Arrays.asList(Component.literal(
+					tr("gui.wurst.keybind_profiles.select_file_first"))),
 				mouseX, mouseY);
 	}
 	
@@ -218,7 +223,7 @@ public final class KeybindProfilesScreen extends Screen
 			return selected != null ? selected.path : null;
 		}
 	}
-
+	
 	private String tr(String key, Object... args)
 	{
 		return WurstClient.INSTANCE.translate(key, args);

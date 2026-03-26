@@ -55,9 +55,8 @@ public final class WurstOptionsOtf extends OtherFeature
 		MutableComponent message =
 			Component.literal("            " + ChatUtils.tr("Options"));
 		
-		MutableComponent narration =
-			Component.translatable("gui.narrate.button",
-				ChatUtils.tr("Wurst Options"));
+		MutableComponent narration = Component
+			.translatable("gui.narrate.button", ChatUtils.tr("Wurst Options"));
 		
 		Tooltip tooltip = Tooltip.create(Component.literal(getDescription()));
 		

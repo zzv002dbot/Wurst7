@@ -172,8 +172,9 @@ public final class SliderComponent extends Component
 			tooltip +=
 				"\n\n" + WURST.translate("gui.wurst.clickgui.slider_disabled");
 		else if(setting.isLocked())
-			tooltip += "\n\n" + WURST.translate(
-				"gui.wurst.clickgui.slider_locked_to", setting.getValueString());
+			tooltip +=
+				"\n\n" + WURST.translate("gui.wurst.clickgui.slider_locked_to",
+					setting.getValueString());
 		
 		return tooltip;
 	}

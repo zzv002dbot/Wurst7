@@ -121,7 +121,8 @@ public final class NavigatorFeatureScreen extends NavigatorScreen
 		
 		// category
 		if(feature.getCategory() != null)
-			text += trRaw(", Category: ") + feature.getCategory().getDisplayName();
+			text +=
+				trRaw(", Category: ") + feature.getCategory().getDisplayName();
 		
 		// description
 		String description = feature.getWrappedDescription(300);
@@ -321,8 +322,7 @@ public final class NavigatorFeatureScreen extends NavigatorScreen
 		
 		// title bar
 		context.drawCenteredString(minecraft.font, feature.getDisplayName(),
-			middleX,
-			32, txtColor);
+			middleX, 32, txtColor);
 		
 		// background
 		int bgx1 = middleX - 154;

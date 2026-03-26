@@ -33,9 +33,9 @@ public class WurstServerPinger
 	{
 		server = new ServerData("", ip + ":" + port, Type.OTHER);
 		
-		new Thread(() -> pingInCurrentThread(ip, port),
-			ChatUtils.tr("Wurst Server Pinger #%s",
-				threadNumber.incrementAndGet())).start();
+		new Thread(() -> pingInCurrentThread(ip, port), ChatUtils
+			.tr("Wurst Server Pinger #%s", threadNumber.incrementAndGet()))
+				.start();
 	}
 	
 	private void pingInCurrentThread(String ip, int port)
@@ -47,7 +47,8 @@ public class WurstServerPinger
 		{
 			pinger.pingServer(server, () -> {}, () -> {}, EventLoopGroupHolder
 				.remote(WurstClient.MC.options.useNativeTransport()));
-			System.out.println(ChatUtils.tr("Ping successful: %s:%s", ip, port));
+			System.out
+				.println(ChatUtils.tr("Ping successful: %s:%s", ip, port));
 			
 		}catch(UnknownHostException e)
 		{

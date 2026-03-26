@@ -20,7 +20,8 @@ public final class SettingsWindow extends Window
 	{
 		super(feature.getDisplayName() + " "
 			+ (WurstClient.INSTANCE.getTranslator() == null ? "Settings"
-				: WurstClient.INSTANCE.getTranslator().translateRaw("Settings")));
+				: WurstClient.INSTANCE.getTranslator()
+					.translateRaw("Settings")));
 		
 		Stream<Setting> settings = feature.getSettings().values().stream();
 		settings.map(Setting::getComponent).forEach(this::add);

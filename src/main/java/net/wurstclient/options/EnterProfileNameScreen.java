@@ -54,11 +54,9 @@ public final class EnterProfileNameScreen extends Screen
 		setFocused(valueField);
 		valueField.setFocused(true);
 		
-		doneButton = Button
-			.builder(
-				Component.literal(tr("gui.wurst.enter_profile_name.button.done")),
-				b -> done())
-			.bounds(x1, y2, 200, 20).build();
+		doneButton = Button.builder(
+			Component.literal(tr("gui.wurst.enter_profile_name.button.done")),
+			b -> done()).bounds(x1, y2, 200, 20).build();
 		addRenderableWidget(doneButton);
 	}
 	
@@ -93,8 +91,8 @@ public final class EnterProfileNameScreen extends Screen
 		float partialTicks)
 	{
 		context.drawCenteredString(minecraft.font,
-			tr("gui.wurst.enter_profile_name.title"),
-			width / 2, 20, CommonColors.WHITE);
+			tr("gui.wurst.enter_profile_name.title"), width / 2, 20,
+			CommonColors.WHITE);
 		
 		valueField.render(context, mouseX, mouseY, partialTicks);
 		
@@ -113,7 +111,7 @@ public final class EnterProfileNameScreen extends Screen
 	{
 		return false;
 	}
-
+	
 	private String tr(String key, Object... args)
 	{
 		return WurstClient.INSTANCE.translate(key, args);

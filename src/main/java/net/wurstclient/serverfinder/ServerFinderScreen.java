@@ -224,22 +224,20 @@ public class ServerFinderScreen extends Screen
 		float partialTicks)
 	{
 		context.drawCenteredString(font, ChatUtils.tr("Server Finder"),
-			width / 2, 20,
-			CommonColors.WHITE);
+			width / 2, 20, CommonColors.WHITE);
 		context.drawCenteredString(font,
 			ChatUtils.tr("This will search for servers with similar IPs"),
-			width / 2, 40,
-			CommonColors.LIGHT_GRAY);
+			width / 2, 40, CommonColors.LIGHT_GRAY);
 		context.drawCenteredString(font,
 			ChatUtils.tr("to the IP you type into the field below."), width / 2,
-			50,
-			CommonColors.LIGHT_GRAY);
+			50, CommonColors.LIGHT_GRAY);
 		context.drawCenteredString(font,
-			ChatUtils.tr("The servers it finds will be added to your server list."),
+			ChatUtils
+				.tr("The servers it finds will be added to your server list."),
 			width / 2, 60, CommonColors.LIGHT_GRAY);
 		
-		context.drawString(font, ChatUtils.tr("Server address:"), width / 2 - 100,
-			height / 4 + 24, CommonColors.LIGHT_GRAY);
+		context.drawString(font, ChatUtils.tr("Server address:"),
+			width / 2 - 100, height / 4 + 24, CommonColors.LIGHT_GRAY);
 		ipBox.render(context, mouseX, mouseY, partialTicks);
 		
 		context.drawString(font, ChatUtils.tr("Max. threads:"), width / 2 - 100,
@@ -252,8 +250,7 @@ public class ServerFinderScreen extends Screen
 		context.drawString(font, ChatUtils.tr("Checked: %s / 1792", checked),
 			width / 2 - 100, height / 4 + 84, CommonColors.LIGHT_GRAY);
 		context.drawString(font, ChatUtils.tr("Working: %s", working),
-			width / 2 - 100,
-			height / 4 + 94, CommonColors.LIGHT_GRAY);
+			width / 2 - 100, height / 4 + 94, CommonColors.LIGHT_GRAY);
 		
 		for(Renderable drawable : renderables)
 			drawable.render(context, mouseX, mouseY, partialTicks);

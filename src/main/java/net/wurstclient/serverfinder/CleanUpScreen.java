@@ -51,9 +51,9 @@ public class CleanUpScreen extends Screen
 	@Override
 	public void init()
 	{
-		addRenderableWidget(new CleanUpButton(width / 2 - 100,
-			height / 4 + 168 + 12, () -> ChatUtils.tr("Cancel"), "",
-			b -> onClose()));
+		addRenderableWidget(
+			new CleanUpButton(width / 2 - 100, height / 4 + 168 + 12,
+				() -> ChatUtils.tr("Cancel"), "", b -> onClose()));
 		
 		addRenderableWidget(cleanUpButton = new CleanUpButton(width / 2 - 100,
 			height / 4 + 144 + 12, () -> ChatUtils.tr("Clean Up"),
@@ -69,23 +69,22 @@ public class CleanUpScreen extends Screen
 				"Servers that clearly don't exist.",
 				b -> cleanupUnknown = !cleanupUnknown));
 		
-		addRenderableWidget(
-			new CleanUpButton(width / 2 - 100, height / 4 + 0 + 12,
-				() -> ChatUtils.tr("Outdated Servers: %s",
-					removeOrKeep(cleanupOutdated)),
-				"Servers that run a different Minecraft\n"
-					+ "version than you.",
-				b -> cleanupOutdated = !cleanupOutdated));
+		addRenderableWidget(new CleanUpButton(width / 2 - 100,
+			height / 4 + 0 + 12,
+			() -> ChatUtils.tr("Outdated Servers: %s",
+				removeOrKeep(cleanupOutdated)),
+			"Servers that run a different Minecraft\n" + "version than you.",
+			b -> cleanupOutdated = !cleanupOutdated));
 		
-		addRenderableWidget(
-			new CleanUpButton(width / 2 - 100, height / 4 + 24 + 12,
-				() -> ChatUtils.tr("Failed Ping: %s", removeOrKeep(cleanupFailed)),
-				"All servers that failed the last ping.\n"
-					+ "Make sure that the last ping is complete\n"
-					+ "before you do this. That means: Go back,\n"
-					+ "press the refresh button and wait until\n"
-					+ "all servers are done refreshing.",
-				b -> cleanupFailed = !cleanupFailed));
+		addRenderableWidget(new CleanUpButton(width / 2 - 100,
+			height / 4 + 24 + 12,
+			() -> ChatUtils.tr("Failed Ping: %s", removeOrKeep(cleanupFailed)),
+			"All servers that failed the last ping.\n"
+				+ "Make sure that the last ping is complete\n"
+				+ "before you do this. That means: Go back,\n"
+				+ "press the refresh button and wait until\n"
+				+ "all servers are done refreshing.",
+			b -> cleanupFailed = !cleanupFailed));
 		
 		addRenderableWidget(
 			new CleanUpButton(width / 2 - 100, height / 4 + 48 + 12,
@@ -97,14 +96,16 @@ public class CleanUpScreen extends Screen
 		
 		addRenderableWidget(
 			new CleanUpButton(width / 2 - 100, height / 4 + 72 + 12,
-				() -> ChatUtils.tr("\u00a7cRemove all Servers: %s", yesOrNo(removeAll)),
+				() -> ChatUtils.tr("\u00a7cRemove all Servers: %s",
+					yesOrNo(removeAll)),
 				"This will completely clear your server\n"
 					+ "list. \u00a7cUse with caution!\u00a7r",
 				b -> removeAll = !removeAll));
 		
 		addRenderableWidget(
 			new CleanUpButton(width / 2 - 100, height / 4 + 96 + 12,
-				() -> ChatUtils.tr("Rename all Servers: %s", yesOrNo(cleanupRename)),
+				() -> ChatUtils.tr("Rename all Servers: %s",
+					yesOrNo(cleanupRename)),
 				"Renames your servers to \"Grief me #1\",\n"
 					+ "\"Grief me #2\", etc.",
 				b -> cleanupRename = !cleanupRename));
@@ -227,12 +228,11 @@ public class CleanUpScreen extends Screen
 	public void render(GuiGraphics context, int mouseX, int mouseY,
 		float partialTicks)
 	{
-		context.drawCenteredString(font, ChatUtils.tr("Clean Up"), width / 2, 20,
-			CommonColors.WHITE);
+		context.drawCenteredString(font, ChatUtils.tr("Clean Up"), width / 2,
+			20, CommonColors.WHITE);
 		context.drawCenteredString(font,
 			ChatUtils.tr("Please select the servers you want to remove:"),
-			width / 2, 36,
-			CommonColors.LIGHT_GRAY);
+			width / 2, 36, CommonColors.LIGHT_GRAY);
 		
 		for(Renderable drawable : renderables)
 			drawable.render(context, mouseX, mouseY, partialTicks);
@@ -289,9 +289,8 @@ public class CleanUpScreen extends Screen
 				net.minecraft.network.chat.Component[] lines2 =
 					new net.minecraft.network.chat.Component[lines.length];
 				for(int i = 0; i < lines.length; i++)
-					lines2[i] =
-						net.minecraft.network.chat.Component
-							.literal(ChatUtils.tr(lines[i]));
+					lines2[i] = net.minecraft.network.chat.Component
+						.literal(ChatUtils.tr(lines[i]));
 				
 				this.tooltip = Arrays.asList(lines2);
 			}

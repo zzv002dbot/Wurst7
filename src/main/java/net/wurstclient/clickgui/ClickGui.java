@@ -797,9 +797,8 @@ public final class ClickGui
 		
 		// window title
 		Font tr = MC.font;
-		String title = tr.substrByWidth(
-			net.minecraft.network.chat.Component.literal(window.getDisplayTitle()),
-			x3 - x1).getString();
+		String title = tr.substrByWidth(net.minecraft.network.chat.Component
+			.literal(window.getDisplayTitle()), x3 - x1).getString();
 		context.guiRenderState.up();
 		context.drawString(tr, title, x1 + 2, y1 + 3, txtColor, false);
 	}

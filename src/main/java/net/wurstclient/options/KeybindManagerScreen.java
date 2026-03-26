@@ -49,49 +49,63 @@ public final class KeybindManagerScreen extends Screen
 		listGui = new ListGui(minecraft, this);
 		addWidget(listGui);
 		
-		addRenderableWidget(addButton = Button
-			.builder(Component.literal(tr("gui.wurst.keybind_manager.button.add")),
-				b -> minecraft.setScreen(new KeybindEditorScreen(this)))
-			.bounds(width / 2 - 102, height - 52, 100, 20).build());
+		addRenderableWidget(
+			addButton =
+				Button
+					.builder(
+						Component.literal(
+							tr("gui.wurst.keybind_manager.button.add")),
+						b -> minecraft.setScreen(new KeybindEditorScreen(this)))
+					.bounds(width / 2 - 102, height - 52, 100, 20).build());
 		
 		addRenderableWidget(
-			editButton = Button
-				.builder(Component.literal(tr("gui.wurst.keybind_manager.button.edit")),
-					b -> edit())
-				.bounds(width / 2 + 2, height - 52, 100, 20).build());
+			editButton =
+				Button
+					.builder(
+						Component.literal(
+							tr("gui.wurst.keybind_manager.button.edit")),
+						b -> edit())
+					.bounds(width / 2 + 2, height - 52, 100, 20).build());
 		
-		addRenderableWidget(removeButton =
-			Button
-				.builder(Component.literal(tr("gui.wurst.keybind_manager.button.remove")),
-					b -> remove())
-				.bounds(width / 2 - 102, height - 28, 100, 20).build());
+		addRenderableWidget(
+			removeButton =
+				Button
+					.builder(
+						Component.literal(
+							tr("gui.wurst.keybind_manager.button.remove")),
+						b -> remove())
+					.bounds(width / 2 - 102, height - 28, 100, 20).build());
 		
-		addRenderableWidget(backButton = Button
-			.builder(Component.literal(tr("gui.wurst.keybind_manager.button.back")),
-				b -> minecraft.setScreen(prevScreen))
-			.bounds(width / 2 + 2, height - 28, 100, 20).build());
+		addRenderableWidget(
+			backButton =
+				Button
+					.builder(
+						Component.literal(
+							tr("gui.wurst.keybind_manager.button.back")),
+						b -> minecraft.setScreen(prevScreen))
+					.bounds(width / 2 + 2, height - 28, 100, 20).build());
 		
-		addRenderableWidget(Button
-			.builder(
-				Component
-					.literal(tr("gui.wurst.keybind_manager.button.reset_keybinds")),
-				b -> minecraft.setScreen(new ConfirmScreen(confirmed -> {
-					if(confirmed)
-						WurstClient.INSTANCE.getKeybinds()
-							.setKeybinds(KeybindList.DEFAULT_KEYBINDS);
-					minecraft.setScreen(this);
-				},
-					Component.literal(tr(
-						"gui.wurst.keybind_manager.confirm_reset.title")),
-					Component.literal(tr(
-						"gui.wurst.keybind_manager.confirm_reset.message")))))
+		addRenderableWidget(Button.builder(
+			Component
+				.literal(tr("gui.wurst.keybind_manager.button.reset_keybinds")),
+			b -> minecraft.setScreen(new ConfirmScreen(confirmed -> {
+				if(confirmed)
+					WurstClient.INSTANCE.getKeybinds()
+						.setKeybinds(KeybindList.DEFAULT_KEYBINDS);
+				minecraft.setScreen(this);
+			}, Component
+				.literal(tr("gui.wurst.keybind_manager.confirm_reset.title")),
+				Component.literal(
+					tr("gui.wurst.keybind_manager.confirm_reset.message")))))
 			.bounds(8, 8, 100, 20).build());
 		
-		addRenderableWidget(Button
-			.builder(
-				Component.literal(tr("gui.wurst.keybind_manager.button.profiles")),
-				b -> minecraft.setScreen(new KeybindProfilesScreen(this)))
-			.bounds(width - 108, 8, 100, 20).build());
+		addRenderableWidget(
+			Button
+				.builder(
+					Component.literal(
+						tr("gui.wurst.keybind_manager.button.profiles")),
+					b -> minecraft.setScreen(new KeybindProfilesScreen(this)))
+				.bounds(width - 108, 8, 100, 20).build());
 	}
 	
 	private void edit()
@@ -156,8 +170,7 @@ public final class KeybindManagerScreen extends Screen
 		listGui.render(context, mouseX, mouseY, partialTicks);
 		
 		context.drawCenteredString(font, tr("gui.wurst.keybind_manager.title"),
-			width / 2, 8,
-			CommonColors.WHITE);
+			width / 2, 8, CommonColors.WHITE);
 		
 		int count = WurstClient.INSTANCE.getKeybinds().getAllKeybinds().size();
 		context.drawCenteredString(font,
@@ -211,7 +224,7 @@ public final class KeybindManagerScreen extends Screen
 				CommonColors.LIGHT_GRAY, false);
 		}
 	}
-
+	
 	private String tr(String key, Object... args)
 	{
 		return WurstClient.INSTANCE.translate(key, args);

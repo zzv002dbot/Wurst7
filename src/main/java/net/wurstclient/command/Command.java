@@ -74,7 +74,7 @@ public abstract class Command extends Feature
 		for(String line : syntax)
 			ChatUtils.message(trRaw("Syntax: %s", line));
 	}
-
+	
 	protected final String trRaw(String text, Object... args)
 	{
 		if(WURST.getTranslator() == null)

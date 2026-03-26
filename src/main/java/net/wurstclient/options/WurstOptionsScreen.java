@@ -165,8 +165,7 @@ public class WurstOptionsScreen extends Screen
 		int y2 = height / 4 + 24 - 28;
 		
 		context.drawCenteredString(fontRenderer, tr("gui.wurst.options.title"),
-			middleX, y1,
-			CommonColors.WHITE);
+			middleX, y1, CommonColors.WHITE);
 		
 		context.drawCenteredString(fontRenderer,
 			tr("gui.wurst.options.category.settings"), middleX - 104, y2,
@@ -178,12 +177,12 @@ public class WurstOptionsScreen extends Screen
 			tr("gui.wurst.options.category.links"), middleX + 104, y2,
 			WurstColors.VERY_LIGHT_GRAY);
 	}
-
+	
 	private String tr(String key, Object... args)
 	{
 		return WurstClient.INSTANCE.translate(key, args);
 	}
-
+	
 	private String onOrOff(boolean on)
 	{
 		return tr(on ? "gui.wurst.generic.on" : "gui.wurst.generic.off");

@@ -30,7 +30,8 @@ public final class WLiteralTextContent implements WTextContent
 		
 		String[] lines = text.split("\n", -1);
 		for(int i = 0; i < lines.length; i++)
-			lines[i] = WurstClient.INSTANCE.getTranslator().translateRaw(lines[i]);
+			lines[i] =
+				WurstClient.INSTANCE.getTranslator().translateRaw(lines[i]);
 		
 		return String.join("\n", lines);
 	}
