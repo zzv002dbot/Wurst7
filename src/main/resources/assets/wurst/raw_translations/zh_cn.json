@@ -228,8 +228,7 @@
   "Change this to §lRight§r when using TabGUI.": "使用 TabGUI 时请将其改为 §lRight§r。",
   "Determines how the HackList entries are sorted.": "决定 HackList 条目的排序方式。",
   "Only visible when §6Mode§r is set to §6Auto§r.": "仅当 §6Mode§r 设置为 §6Auto§r 时显示。",
-  "When enabled, entries slide into and out of the HackList as hacks are enabled and disabled.": "启用后，Hack 开关时条目会滑入滑出 HackList。"
-  ,
+  "When enabled, entries slide into and out of the HackList as hacks are enabled and disabled.": "启用后，Hack 开关时条目会滑入滑出 HackList。",
   "Toggles a hack.": "切换一个 Hack 的开关状态。",
   "Enables, disables or cancels Blink.": "启用、禁用或取消 Blink。",
   "Instantly disconnects from the server.": "立即与服务器断开连接。",
@@ -308,8 +307,7 @@
   "Unknown command: .": "未知命令：.",
   "\"%s\" could not be found.": "找不到 \"%s\"。",
   "Entity \"%s\" could not be found.": "找不到实体 \"%s\"。",
-  "Player \"%s\" could not be found.": "找不到玩家 \"%s\"。"
-  ,
+  "Player \"%s\" could not be found.": "找不到玩家 \"%s\"。",
   "Leave": "离开",
   "Jump": "跳跃",
   "Be a BOSS!": "当个大佬！",
